@@ -18,7 +18,8 @@ class PegawaiFactory extends Factory
     {
         return [
             'nama' => fake()->name(),
-            'jk' => 'Laki-laki',
+            'jk' => 'perempuan',
+            // 'jk' => 'Laki-laki',
             'email' => fake()->unique()->safeEmail(),
             'alamat' => fake()->address()
         ];

@@ -21,21 +21,72 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-md-4">
 
-                            <div class="btn btn-primary btn-sm">Tambah Pegawai</div>
+                            <div class="btn btn-primary btn-sm" id="btn-tambah">Tambah Pegawai</div>
                         </div>
                     </div>
 
-
-                    {{-- test --}}
-                    @foreach ($pegawais as $pegawai)
-                    {{ $pegawai->nama }}
-                    @endforeach
+                    <div class="row">
+                        <div class="col">
+                            <table id="tbl-list" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Email</th>
+                                        <th>Alamat</th>
+                                        <th>Created_at</th>
+                                        <th width="100px">Aksi</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+@include('components.tambah-modal')
+@push('scripts')
+<script>
+    //CSRF TOKEN PADA HEADER
+    //Script ini wajib krn kita butuh csrf token setiap kali mengirim request post, patch, put dan delete ke server
+    
+    $(document).ready(function(){
+       
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+      
+            $('#tbl-list').DataTable({
+            processing:true,
+            serverSide:true,
+            ajax: "{{ route('home-index') }}",
+            columns:[
+                {data: 'nama', name: 'nama'},
+                {data: 'jk', name: 'jk'},
+                {data: 'email', name: 'email'},
+                {data: 'alamat', name: 'alamat'},
+                {data: 'created_at', name: 'created_at'},
+                {data: 'action', name: 'action', orderable: true, searchable: false},
+            ]
+        });
+
+      $(document).on('click', '.delete', function () {
+            dataId = $(this).data('id');
+            console.log(dataId)
+        });
+
+        $(document).on('click','#btn-tambah',function(){
+            $('#tambah-modal').modal('show');
+        });
+    })
+</script>
+
+@endpush

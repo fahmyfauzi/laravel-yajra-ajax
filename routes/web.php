@@ -22,4 +22,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/home', [PegawaiController::class, 'index']);
+Route::get('/home', [PegawaiController::class, 'index'])->name('home-index');
+
+Route::post('/home/tambah-pegawai', [PegawaiController::class, 'store'])->name('home-store');
