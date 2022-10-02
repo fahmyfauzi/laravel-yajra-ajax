@@ -22,6 +22,9 @@ class PegawaiController extends Controller
                     $btn .= '<a href="javascript:void(0)" name="delete" class="delete btn btn-danger btn-sm" data-id="' . $data->id . '" ">Delete</a>';
                     return $btn;
                 })
+                ->editColumn('created_at', function ($pegawai) {
+                    return $pegawai->created_at; // no formatting, just returned $user->created_at; 
+                })
                 ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
