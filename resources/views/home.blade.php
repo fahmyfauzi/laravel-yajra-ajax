@@ -14,10 +14,15 @@
                     <div class="row mb-3">
                         <div class="col-md-8">
                             <div class="input-group">
-                                <input type="text" class="form-control me-2" name="from-date" placeholder="From date">
-                                <input type="text" class="form-control me-2" name="to-date" placeholder="To date">
-                                <button class="btn btn-primary btn-sm me-2">Filter</button>
-                                <button class="btn btn-light btn-sm me-2">Refresh</button>
+                                <div class="input-group input-daterange">
+                                    <input type="text" class="form-control datepicker" id="from_date"
+                                        placeholder="From Date">
+                                    <div class="input-group-addon mx-2">to</div>
+                                    <input type="text" class="form-control datepicker" id="to_date"
+                                        placeholder="To Date">
+                                    <button class="btn btn-primary btn-sm me-2 " id="filter">Filter</button>
+                                    <button class="btn btn-light btn-sm me-2" id="refresh">Refresh</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,6 +58,10 @@
 @include('components.tambah-modal')
 @include('components.edit-modal')
 @include('components.delete-modal')
+
+@push('styles')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+@endpush
 @push('scripts')
 <script>
     //CSRF TOKEN PADA HEADER
@@ -80,7 +89,39 @@
             ]
         });
 
-    
+        $('#from_date').datepicker({
+            format: 'dd/mm/yyyy',
+            todayBtn: "linked",
+                autoclose: true
+        });
+        $('#to_date input').datepicker({
+            format: 'mm/dd/yyyy',
+            todayBtn: "linked",
+                autoclose: true
+        });
+        $('#to_date').datepicker({
+          format: 'dd/mm/yyyy',
+            todayBtn: "linked",
+            autoclose: true
+        });
+
+        $('#filter').click(function(){
+            var fromDate = $('#from_date').val()
+            var toDate = $('#to_date').val()
+
+            if(fromDate != '' && toDate != '')
+            {
+                $('#tbl-list').DataTable().destroy();
+                load_data(fromDate,toDate)
+            }
+        })
+
+        $('#refresh').click(function(){
+            $('#from_date').val('');
+            $('#to_date').val('');
+            $('#tbl-list').DataTable().destroy();
+            load_data();
+        })
 
         $(document).on('click','#btn-tambah',function(){
             $('#tambah-modal').modal('show');
