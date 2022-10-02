@@ -19,7 +19,7 @@ class PegawaiController extends Controller
                 ->addColumn('action', function ($data) {
                     $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm" data-toggle="tooltip" data-id="' . $data->id . '">Edit</a>';
                     $btn .= '&nbsp;&nbsp;';
-                    $btn .= '<a href="javascript:void(0)" name="delete" class="delete btn btn-danger btn-sm" data-id="' . $data->id . '" id="' . $data->id . '">Delete</a>';
+                    $btn .= '<a href="javascript:void(0)" name="delete" class="delete btn btn-danger btn-sm" data-id="' . $data->id . '" ">Delete</a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -55,6 +55,56 @@ class PegawaiController extends Controller
             'success' => true,
             'message' => "Berhasil ditambahkan",
             'data' => $pegawai
+        ]);
+    }
+
+    // show
+    public function show(Pegawai $pegawai)
+    {
+        // dd($pegawai);
+        return response()->json([
+            'success' => true,
+            'message' => "berhasil ditampilkan",
+            'data' => $pegawai
+        ]);
+    }
+
+    public function update(Request $request, Pegawai $pegawai)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'jk' => 'required',
+            'alamat' => 'required',
+            'email' => 'required|unique:pegawais,email,' . $pegawai->id,
+        ]);
+
+        //cek validasi salah
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        // update
+        $pegawai->update([
+            'nama' => $request->nama,
+            'jk' => $request->jk,
+            'email' => $request->email,
+            'alamat' => $request->alamat,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil Diedit",
+            'data' => $pegawai
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        Pegawai::where('id', $id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil dihapus',
         ]);
     }
 }

@@ -51,6 +51,8 @@
 </div>
 @endsection
 @include('components.tambah-modal')
+@include('components.edit-modal')
+@include('components.delete-modal')
 @push('scripts')
 <script>
     //CSRF TOKEN PADA HEADER
@@ -78,10 +80,7 @@
             ]
         });
 
-      $(document).on('click', '.delete', function () {
-            dataId = $(this).data('id');
-            console.log(dataId)
-        });
+    
 
         $(document).on('click','#btn-tambah',function(){
             $('#tambah-modal').modal('show');

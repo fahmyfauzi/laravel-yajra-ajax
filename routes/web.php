@@ -25,3 +25,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/home', [PegawaiController::class, 'index'])->name('home-index');
 
 Route::post('/home/tambah-pegawai', [PegawaiController::class, 'store'])->name('home-store');
+Route::get('/home/pegawai/{pegawai}', [PegawaiController::class, 'show'])->name('home-show');
+
+Route::put('/home/pegawai/{pegawai}', [PegawaiController::class, 'update'])->name('home-update');
+
+route::delete('/home/pegawai/{id}', [PegawaiController::class, 'destroy'])->name('home-delete');

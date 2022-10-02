@@ -9,7 +9,9 @@
                 <form>
                     <div class="mb-3">
                         <label for="nama" class="col-form-label">Nama:</label>
-                        <input type="text" class="form-control" id="nama" placeholder="Masukan nama anda...">
+                        <input type="text" class="form-control" id="nama" name="nama"
+                            placeholder="Masukan nama anda...">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-nama"></div>
                     </div>
                     <div class="mb-3">
                         <label for="jk" class="col-form-label">Jenis Kelamin:</label>
@@ -18,14 +20,17 @@
                             <option value="Laki-laki">Laki-laki</option>
                             <option value="Perempuan">Perempuan</option>
                         </select>
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-jk"></div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="col-form-label">Email:</label>
                         <input type="text" class="form-control" id="email" placeholder="Masukan email anda...">
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-email"></div>
                     </div>
                     <div class="mb-3">
                         <label for="alamat" class="col-form-label">Alamat:</label>
                         <textarea class="form-control" id="alamat" placeholder="Masukan alamat anda"></textarea>
+                        <div class="alert alert-danger mt-2 d-none" role="alert" id="alert-alamat"></div>
                     </div>
                 </form>
             </div>
@@ -66,10 +71,22 @@
                 'alamat': alamat,
             },
             success:function(response){
+                Swal.fire({
+                    title: 'Success',
+                    text: "Berhasil Ditambahkan",
+                    icon: 'success',
+                    timer: 2000
+                });
+
                 var oTable = $('#tbl-list').dataTable();
                 oTable.fnDraw(false);
                 $('#tambah-modal').modal('hide');
            
+            },
+            error:function(error){
+                console.log(error)
+            
+
             }
         });
         
